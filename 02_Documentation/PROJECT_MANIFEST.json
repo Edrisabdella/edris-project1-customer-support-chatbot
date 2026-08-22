@@ -1,0 +1,14 @@
+{
+  "project": "Customer Support Chatbot with Amazon Bedrock AgentCore",
+  "author": "Edris Abdella Nuure",
+  "region": "us-east-1",
+  "model": "us.amazon.nova-pro-v1:0",
+  "routes": [
+    "BUG_REPORT",
+    "PLATFORM_QUESTION",
+    "OTHER_REQUEST"
+  ],
+  "tool": "bugreports___create_bug_report",
+  "storage": "DynamoDB",
+  "architecture_diagram": "documentation/architecture-diagram.png"
+}

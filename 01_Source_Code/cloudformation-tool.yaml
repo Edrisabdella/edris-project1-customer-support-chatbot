@@ -1,0 +1,87 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Customer Support Chatbot - bug report tool stack.
+
+Parameters:
+  LambdaCodeS3Bucket:
+    Type: String
+    Default: ''
+    Description: Optional S3 bucket for packaged Lambda code. Leave empty when deploying inline code.
+
+Resources:
+  BugReportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${AWS::StackName}-bug-reports'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: ticketId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: ticketId
+          KeyType: HASH
+
+  LambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${AWS::StackName}-lambda-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: LambdaBugReportPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+              - Effect: Allow
+                Action: dynamodb:PutItem
+                Resource: !GetAtt BugReportsTable.Arn
+
+  CreateBugReportFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-create-bug-report'
+      Runtime: python3.12
+      Handler: create_bug_report.lambda_handler
+      Role: !GetAtt LambdaRole.Arn
+      Timeout: 30
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BugReportsTable
+      Code:
+        ZipFile: |
+          import os, uuid
+          from datetime import datetime, timezone
+          import boto3
+          table = boto3.resource("dynamodb").Table(os.environ["TABLE_NAME"])
+
+          def lambda_handler(event, context):
+              required = ("description", "stepsToReproduce", "environment")
+              missing = [k for k in required if not str(event.get(k, "")).strip()]
+              if missing:
+                  return {"statusCode": 400, "error": f"Missing required fields: {', '.join(missing)}"}
+              ticket_id = f"BUG-{uuid.uuid4().hex[:10].upper()}"
+              table.put_item(Item={
+                  "ticketId": ticket_id,
+                  "description": str(event["description"]).strip(),
+                  "stepsToReproduce": str(event["stepsToReproduce"]).strip(),
+                  "environment": str(event["environment"]).strip(),
+                  "status": "OPEN",
+                  "createdAt": datetime.now(timezone.utc).isoformat()
+              })
+              return {"ticketId": ticket_id, "status": "OPEN"}
+
+Outputs:
+  TableName:
+    Value: !Ref BugReportsTable
+  LambdaFunctionName:
+    Value: !Ref CreateBugReportFunction

@@ -1,9 +1,3 @@
-# customer-support-chatbot
-
-Customer Support Chatbot project
-
-![alt text](https://i.ibb.co/Ps7XVcWy/cover-page-customer-support-chatbot.png)
-
 # Customer Support Chatbot with Amazon Bedrock AgentCore
 
 **Professional project package — AWS AI & ML Scholars Program**

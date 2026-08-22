@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+agentcore_config.json
+.env
+*.log
+.DS_Store

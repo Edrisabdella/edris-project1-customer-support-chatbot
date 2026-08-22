@@ -1,0 +1,14 @@
+{
+  "project": "Customer Support Chatbot with Amazon Bedrock AgentCore",
+  "architecture": "AgentCore -> Gateway -> Lambda -> DynamoDB + Embedded FAQ Routing",
+  "author": "Edris Abdella Nuure",
+  "program": "AWS AI & ML Scholars Program",
+  "final_package": true,
+  "cover_source_requested": "https://i.ibb.co/Ps7XVcWy/cover-page-customer-support-chatbot.png",
+  "cover_source_status": "remote source unavailable in execution environment; latest approved local no-photo cover used",
+  "deliverables": {
+    "presentation": "04_Final_Deliverables/Final_Project_Presentation.pptx",
+    "report": "04_Final_Deliverables/Final_Project_Report.pdf",
+    "cover": "00_Cover_Page/00_Cover_Page.png"
+  }
+}
