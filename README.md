@@ -1,2 +1,2 @@
 # customer-support-chatbot
-Customer Support Chatbot with Amazon Bedrock Flows
+Customer Support Chatbot project
