@@ -10,5 +10,12 @@
   ],
   "tool": "bugreports___create_bug_report",
   "storage": "DynamoDB",
-  "architecture_diagram": "documentation/architecture-diagram.png"
+  "flow_tests": "flow-tests.json",
+  "evaluation_output": "eval-dataset.jsonl",
+  "architecture_diagrams": [
+    "03_Architecture/architecture-final-no-photo.png",
+    "03_Architecture/architecture-technical.png",
+    "06_Additional_Assets/architecture-clean-alternate.png",
+    "06_Additional_Assets/architecture-infographic-alternate.png"
+  ]
 }

@@ -1,5 +1,8 @@
 {
   "description": "Professional automated test suite covering all required routes and edge cases.",
+  "flowInputNode": {
+    "nodeName": "FlowInputNode"
+  },
   "tests": [
     {
       "id": "bug-001",

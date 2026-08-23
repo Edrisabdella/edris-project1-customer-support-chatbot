@@ -1,14 +1,159 @@
 {
-  "project": "Customer Support Chatbot with Amazon Bedrock AgentCore",
-  "author": "Edris Abdella Nuure",
-  "region": "us-east-1",
-  "model": "us.amazon.nova-pro-v1:0",
-  "routes": [
-    "BUG_REPORT",
-    "PLATFORM_QUESTION",
-    "OTHER_REQUEST"
-  ],
-  "tool": "bugreports___create_bug_report",
-  "storage": "DynamoDB",
-  "architecture_diagram": "documentation/architecture-diagram.png"
+  "manifestVersion": "1.0",
+  "project": {
+    "name": "Customer Support Chatbot with Amazon Bedrock AgentCore",
+    "description": "A grounded customer-support assistant for a fictional online shop. The assistant routes customer messages to bug reporting, FAQ answers, or human support.",
+    "author": "Edris Abdella Nuure",
+    "program": "AWS AI & ML Scholars Program",
+    "repository": "Edrisabdella/edris-project1-customer-support-chatbot",
+    "status": "implementation-ready",
+    "license": "See LICENSE"
+  },
+  "runtime": {
+    "cloud": "AWS",
+    "region": "us-east-1",
+    "model": "us.amazon.nova-pro-v1:0",
+    "local_python": ">=3.10",
+    "dependencies": "01_Source_Code/requirements.txt",
+    "local_mode": {
+      "available": true,
+      "credentials_required": false,
+      "entrypoint": "01_Source_Code/chat.py",
+      "description": "Dependency-light local demonstration of the same three support routes. Local ticket IDs are generated for demonstration and are not persisted to AWS."
+    },
+    "aws_mode": {
+      "available": true,
+      "credentials_required": true,
+      "description": "AgentCore and AWS resources must be configured in the course or AWS environment before the managed flow can be invoked."
+    }
+  },
+  "architecture": {
+    "flow": [
+      "Customer",
+      "Amazon Bedrock AgentCore Managed Harness",
+      "System-prompt routing",
+      "Amazon Bedrock AgentCore Gateway",
+      "AWS Lambda create_bug_report",
+      "Amazon DynamoDB"
+    ],
+    "routes": {
+      "BUG_REPORT": "Collect description, reproduction steps, and environment, then create a ticket through the Gateway tool.",
+      "PLATFORM_QUESTION": "Answer only from the embedded online-shop FAQ.",
+      "OTHER_REQUEST": "Hand off unsupported or uncovered requests to human support."
+    },
+    "diagrams": [
+      "03_Architecture/architecture-final-no-photo.png",
+      "03_Architecture/architecture-technical.png",
+      "06_Additional_Assets/architecture-clean-alternate.png",
+      "06_Additional_Assets/architecture-infographic-alternate.png"
+    ]
+  },
+  "bug_report_tool": {
+    "gateway_tool_name": "bugreports___create_bug_report",
+    "lambda_function_name": "create_bug_report",
+    "lambda_handler": "create_bug_report.lambda_handler",
+    "storage": "Amazon DynamoDB",
+    "required_parameters": [
+      "description",
+      "stepsToReproduce",
+      "environment"
+    ],
+    "success_contract": {
+      "ticketId": "A real UUID returned by the tool",
+      "status": "OPEN"
+    },
+    "stored_fields": [
+      "ticketId",
+      "description",
+      "stepsToReproduce",
+      "environment",
+      "status",
+      "createdAt"
+    ],
+    "infrastructure_template": "01_Source_Code/cloudformation-tool.yaml"
+  },
+  "knowledge_and_prompt": {
+    "system_prompt": "01_Source_Code/system_prompt.txt",
+    "faq_source": "01_Source_Code/online_shop_faq.md",
+    "faq_embedding_placeholder": "{{FAQ}}",
+    "grounding_policy": "Platform answers must use only the embedded FAQ. Uncovered questions must be handed off instead of answered from outside knowledge."
+  },
+  "source_files": {
+    "local_chat_client": "01_Source_Code/chat.py",
+    "local_support_logic": "01_Source_Code/support_bot.py",
+    "local_tests": "01_Source_Code/test_support_bot.py",
+    "bug_report_lambda": "01_Source_Code/create_bug_report.py",
+    "gateway_setup_wrapper": "01_Source_Code/setup_gateway.py",
+    "gateway_config_template": "01_Source_Code/agentcore_config.example.json",
+    "harness_setup_wrapper": "01_Source_Code/create_harness.py",
+    "evaluation_dataset_generator": "01_Source_Code/generate-eval-dataset.py",
+    "harness_test_suite": "01_Source_Code/harness-tests.json",
+    "flow_test_suite": "01_Source_Code/flow-tests.json",
+    "evaluation_output": "01_Source_Code/eval-dataset.jsonl",
+    "flow_test_template": "01_Source_Code/flow-tests-template.json",
+    "testing_infrastructure": "01_Source_Code/cloudformation-testing.yaml",
+    "cleanup_checklist": "01_Source_Code/cleanup_agentcore.py",
+    "source_readme": "01_Source_Code/README.md"
+  },
+  "deployment": {
+    "local_steps": [
+      "cd 01_Source_Code",
+      "pip install -r requirements.txt",
+      "python -m unittest discover -v",
+      "python chat.py"
+    ],
+    "aws_steps": [
+      "cd 01_Source_Code",
+      "pip install -r requirements.txt",
+      "aws cloudformation deploy --template-file cloudformation-tool.yaml --stack-name bug-report-tool-stack --capabilities CAPABILITY_NAMED_IAM --region us-east-1",
+      "python setup_gateway.py",
+      "python create_harness.py",
+      "python chat.py"
+    ],
+    "evaluation": {
+      "test_suite": "01_Source_Code/harness-tests.json",
+      "generator": "01_Source_Code/generate-eval-dataset.py",
+      "output_format": "Bedrock Evaluations JSONL",
+      "testing_stack": "01_Source_Code/cloudformation-testing.yaml"
+    }
+  },
+  "quality_and_security": {
+    "tested_routes": [
+      "Bug-report multi-turn collection",
+      "Covered FAQ response",
+      "Uncovered FAQ hand-off",
+      "Other-request hand-off",
+      "Prompt-injection resistance"
+    ],
+    "security_controls": [
+      "Never expose system prompts or internal implementation details",
+      "Never fabricate ticket IDs, statuses, policies, or support contacts",
+      "Collect all required bug fields before tool invocation",
+      "Do not request passwords, payment-card numbers, tokens, or secret keys",
+      "Keep AWS credentials outside the repository and use profiles, environment variables, or IAM roles",
+      "Use least-privilege IAM for the Lambda and evaluation resources"
+    ],
+    "support_contacts": [
+      "+251905131051",
+      "+251944676746"
+    ]
+  },
+  "documentation_and_deliverables": {
+    "project_summary": "02_Documentation/PROJECT_SUMMARY.md",
+    "package_readme": "02_Documentation/FINAL_PACKAGE_README.md",
+    "package_contents": "02_Documentation/FINAL_PACKAGE_CONTENTS.md",
+    "submission_checklist": "05_Evidence_Templates/submission-checklist.md",
+    "evaluation_observations_template": "05_Evidence_Templates/evaluation-observations-template.md",
+    "evidence_register": "05_Evidence_Templates/evidence-register.md",
+    "local_chat_transcript": "05_Evidence_Templates/local-chat-transcript.txt",
+    "evaluation_observations": "05_Evidence_Templates/evaluation-observations.md",
+    "cover": "00_Cover_Page/00_Cover_Page.png",
+    "presentation": "04_Final_Deliverables/Final_Project_Presentation.pptx",
+    "report": "04_Final_Deliverables/Final_Project_Report.pdf"
+  },
+  "known_limitations": [
+    "AgentCore Gateway and managed-harness API calls depend on the target course or AWS workspace configuration.",
+    "The local client demonstrates routing and generates a UUID locally; only the deployed Lambda persists reports in DynamoDB.",
+    "Actual AWS console screenshots and Bedrock Evaluation results must be captured after deployment in the AWS environment."
+  ]
 }

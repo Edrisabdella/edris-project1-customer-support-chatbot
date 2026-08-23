@@ -17,9 +17,10 @@ Customer → AgentCore Managed Harness → Routing Decision
 - **Platform Question** → Embedded FAQ → grounded answer
 - **Other Request / uncovered FAQ** → Human Support
 
-The architecture diagram is included at:
+The architecture diagrams are included under:
 
-`documentation/architecture-diagram.png`
+- `03_Architecture/architecture-final-no-photo.png`
+- `03_Architecture/architecture-technical.png`
 
 ## Required AWS region and model
 
@@ -43,7 +44,7 @@ The architecture diagram is included at:
 
 ## Deployment sequence
 
-Run from `project/starter/`:
+Run from `01_Source_Code/`:
 
 ```bash
 pip install -r requirements.txt
@@ -96,7 +97,7 @@ Upload the resulting `eval-dataset.jsonl` to the evaluation S3 location and crea
 
 ## Submission evidence checklist
 
-See `evidence/submission-checklist.md`.
+See `../05_Evidence_Templates/submission-checklist.md`.
 
 Recommended screenshots:
 
@@ -118,6 +119,9 @@ Recommended screenshots:
 ## Security
 
 - Never commit AWS access keys, secret keys, session tokens, or credentials.
+- If credentials are accidentally shared, revoke or rotate them immediately.
+- Use the non-secret template at `../01_Source_Code/agentcore_config.example.json`
+	and authenticate through an AWS profile, environment, or IAM role.
 - Use least-privilege IAM.
 - Do not expose internal prompts or tool implementation details.
 - Do not fabricate support policies or ticket IDs.

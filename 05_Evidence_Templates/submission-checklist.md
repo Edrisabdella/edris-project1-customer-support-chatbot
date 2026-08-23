@@ -1,42 +1,54 @@
 # Professional Submission Checklist
 
 ## Architecture
-- [ ] Architecture diagram included
-- [ ] Customer → AgentCore → routing paths are visible
-- [ ] Gateway → Lambda → DynamoDB path is visible
-- [ ] FAQ grounding path is visible
-- [ ] Human support hand-off is visible
+- [x] Architecture diagram included
+- [x] Customer → AgentCore → routing paths are visible in the architecture specification
+- [x] Gateway → Lambda → DynamoDB path is visible
+- [x] FAQ grounding path is visible
+- [x] Human support hand-off is visible
+- [ ] Capture and attach full Bedrock Flow diagram screenshot
+- [ ] Capture and attach classifier prompt configuration screenshot
+- [ ] Capture and attach Condition node expressions screenshot
 
 ## Classification and routing
-- [ ] Exactly three routes are documented
-- [ ] Bug reports route to bug collection
-- [ ] Platform questions route to FAQ
-- [ ] Other/uncovered requests route to human support
+- [x] Exactly three routes are documented
+- [x] Bug reports route to bug collection
+- [x] Platform questions route to FAQ
+- [x] Other/uncovered requests route to human support
+- [x] Flow node and condition specification included in `03_Architecture/flow-routing-spec.md`
 
 ## Bug reports
-- [ ] Description collected
-- [ ] Steps to reproduce collected
-- [ ] Environment collected
-- [ ] Tool called only after all three are present
-- [ ] Ticket ID returned from the real tool
-- [ ] DynamoDB record exists with status OPEN
+- [x] Description collected
+- [x] Steps to reproduce collected
+- [x] Environment collected
+- [x] Tool called only after all three are present
+- [x] Ticket ID returned in local deterministic test; AWS ticket requires live run
+- [ ] Attach `chat.py` AWS transcript showing the tool call
+- [ ] Attach DynamoDB screenshot showing an item with status OPEN
 
 ## FAQ
-- [ ] FAQ embedded through {{FAQ}}
-- [ ] Covered question tested
-- [ ] Uncovered question tested
-- [ ] No unsupported answers fabricated
+- [x] FAQ embedded through {{FAQ}}
+- [x] Covered question tested
+- [x] Uncovered question tested
+- [x] No unsupported answers fabricated
+- [ ] Attach FAQ Prompt node screenshot from the deployed Flow
 
 ## Testing and evaluation
-- [ ] harness-tests.json completed
-- [ ] eval-dataset.jsonl generated
+- [x] `flow-tests.json` completed
+- [x] `eval-dataset.jsonl` generated as a local evaluation artifact
 - [ ] JSONL uploaded to S3
 - [ ] Bedrock Evaluation job created
 - [ ] Correctness score reviewed
-- [ ] Observations written
+- [x] Observations and limitations written
+- [ ] Attach Bedrock Evaluation results screenshot
 
 ## Security / edge cases
-- [ ] Prompt injection tested
-- [ ] Very short input tested
-- [ ] Ambiguous input tested
-- [ ] Secrets excluded from repository
+- [x] Prompt injection tested
+- [x] Very short input tested
+- [x] Ambiguous input tested
+- [x] Secrets excluded from repository
+
+## Evidence files
+
+See `evidence-register.md` for the exact filenames and capture instructions
+required before final submission.

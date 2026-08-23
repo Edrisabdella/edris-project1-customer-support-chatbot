@@ -4,4 +4,6 @@ __pycache__/
 agentcore_config.json
 .env
 *.log
+eval-dataset*.jsonl
+tempCodeRunnerFile.py
 .DS_Store

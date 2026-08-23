@@ -2,39 +2,69 @@ import json
 import os
 import uuid
 from datetime import datetime, timezone
-
 import boto3
 
-dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table(os.environ["TABLE_NAME"])
+REQUIRED_FIELDS = ("description", "stepsToReproduce", "environment")
 
-
-def lambda_handler(event, context):
-    """Persist a completed bug report in DynamoDB."""
+def lambda_handler(event, _):
     if not isinstance(event, dict):
-        raise ValueError("Event must be a JSON object")
+        return _resp({}, {"error": "invalid_event"})
 
-    required = ("description", "stepsToReproduce", "environment")
-    missing = [key for key in required if not str(event.get(key, "")).strip()]
+    print("EVENT:", json.dumps(event, indent=2, default=str))
+
+    if event.get("messageVersion") != "1.0" or event.get("function") != "create_bug_report":
+        return _resp(event, {"error": "unsupported"})
+
+    params = event.get("parameters") or []
+    body = {
+        p.get("name"): p.get("value")
+        for p in params
+        if isinstance(p, dict) and p.get("name") is not None
+    }
+
+    description = (body.get("description") or "").strip()
+    steps = (body.get("stepsToReproduce") or "").strip()
+    environment = (body.get("environment") or "").strip()
+
+    missing = [
+        field
+        for field, value in (
+            ("description", description),
+            ("stepsToReproduce", steps),
+            ("environment", environment),
+        )
+        if not value
+    ]
     if missing:
-        return {
-            "statusCode": 400,
-            "error": f"Missing required fields: {', '.join(missing)}"
-        }
+        return _resp(event, {"error": "missing", "field": missing[0]})
 
-    ticket_id = f"BUG-{uuid.uuid4().hex[:10].upper()}"
+    ticket_id = str(uuid.uuid4())
     item = {
         "ticketId": ticket_id,
-        "description": str(event["description"]).strip(),
-        "stepsToReproduce": str(event["stepsToReproduce"]).strip(),
-        "environment": str(event["environment"]).strip(),
+        "description": description,
+        "stepsToReproduce": steps,
+        "environment": environment,
         "status": "OPEN",
         "createdAt": datetime.now(timezone.utc).isoformat(),
     }
 
-    table.put_item(Item=item)
+    boto3.resource("dynamodb").Table(os.environ["TABLE_NAME"]).put_item(Item=item)
 
+    return _resp(event, {"ticketId": ticket_id, "status": "OPEN"})
+
+
+def _resp(event, obj):
     return {
-        "ticketId": ticket_id,
-        "status": "OPEN"
+        "messageVersion": "1.0",
+        "response": {
+            "actionGroup": event.get("actionGroup"),
+            "function": event.get("function"),
+            "functionResponse": {
+                "responseBody": {
+                    "TEXT": {
+                        "body": json.dumps(obj)
+                    }
+                }
+            },
+        },
     }

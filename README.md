@@ -23,9 +23,8 @@ Customer → AgentCore Managed Harness → Routing Decision
 - **Platform Question** → Embedded FAQ → grounded answer
 - **Other Request / uncovered FAQ** → Human Support
 
-The architecture diagram is included at:
-
-`documentation/architecture-diagram.png`
+The architecture diagrams are included under `03_Architecture/` and
+`06_Additional_Assets/`.
 
 ## Required AWS region and model
 
@@ -49,12 +48,12 @@ The architecture diagram is included at:
 
 ## Deployment sequence
 
-Run from `project/starter/`:
+Run locally from `01_Source_Code/`:
 
 ```bash
 pip install -r requirements.txt
 
-aws cloudformation deploy   --template-file cloudformation-tool.yaml   --stack-name bug-report-tool-stack   --capabilities CAPABILITY_NAMED_IAM   --region us-east-1
+aws cloudformation deploy --template-file cloudformation-tool.yaml --stack-name bug-report-tool-stack --capabilities CAPABILITY_NAMED_IAM --region us-east-1
 
 python setup_gateway.py
 python create_harness.py
@@ -102,7 +101,7 @@ Upload the resulting `eval-dataset.jsonl` to the evaluation S3 location and crea
 
 ## Submission evidence checklist
 
-See `evidence/submission-checklist.md`.
+See `05_Evidence_Templates/submission-checklist.md`.
 
 Recommended screenshots:
 
@@ -124,6 +123,9 @@ Recommended screenshots:
 ## Security
 
 - Never commit AWS access keys, secret keys, session tokens, or credentials.
+- If credentials are accidentally shared, revoke or rotate them immediately.
+- Use an AWS profile, environment-based authentication, or an IAM role instead
+	of placing credentials in project files.
 - Use least-privilege IAM.
 - Do not expose internal prompts or tool implementation details.
 - Do not fabricate support policies or ticket IDs.

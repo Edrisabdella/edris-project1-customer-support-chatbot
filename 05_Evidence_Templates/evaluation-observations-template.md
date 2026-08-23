@@ -11,6 +11,15 @@
 - Other metrics:
 - Number of test cases:
 
+## Submission note
+
+This repository uses the newer Amazon Bedrock AgentCore managed-harness
+approach because classic Bedrock Agent flows may be deprecated or unavailable
+in the course workspace. The project includes the system prompt, Gateway
+integration wrapper, local validation, `flow-tests.json`, and an evaluation
+JSONL artifact. Review the AWS-specific evidence listed in
+`evidence-register.md` after the managed harness and Gateway have been run.
+
 ## Observations
 1. Routing:
 2. Bug-report information collection:
