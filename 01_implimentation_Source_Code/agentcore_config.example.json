@@ -1,0 +1,8 @@
+{
+  "region": "us-east-1",
+  "model": "us.amazon.nova-pro-v1:0",
+  "gatewayIdentifier": "REPLACE_WITH_GATEWAY_IDENTIFIER",
+  "gatewayRoleArn": "REPLACE_WITH_GATEWAY_ROLE_ARN",
+  "toolName": "bugreports___create_bug_report",
+  "targetName": "bugreports"
+}
