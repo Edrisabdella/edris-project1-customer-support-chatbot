@@ -14,7 +14,46 @@ Customer Support Chatbot project
 Phone: +251905131051 / +251944676746  
 Email: edrisabdella178@gmail.com / engineeredrisabdella@gmail.com  
 LinkedIn: https://www.linkedin.com/in/edris-abdella-7aa521177
-
+## project structure
+Customer_Support_Chatbot/
+│
+├── 01_IMPLEMENTATION/
+│   ├── system_prompt.txt
+│   ├── flow_definition.json
+│   ├── create_flow.py
+│   ├── create_harness.py
+│   ├── chat.py
+│   ├── setup_gateway.py
+│   ├── create_bug_report.py
+│   ├── cloudformation-tool.yaml
+│   ├── cloudformation-testing.yaml
+│   ├── online_shop_faq.md
+│   ├── create_guardrail.py
+│   └── create_knowledge_base.md
+│
+├── 02_TESTING/
+│   ├── flow-tests.json
+│   ├── generate-eval-dataset.py
+│   └── output_eval_dataset.jsonl
+│
+├── 03_EVIDENCE/
+│   ├── 01_full_flow_diagram.png
+│   ├── 02_classifier_prompt.png
+│   ├── 03_condition_node_expressions.png
+│   ├── 04_bug_report_chat_transcript.png
+│   ├── 05_dynamodb_ticket.png
+│   ├── 06_faq_prompt.png
+│   ├── 07_faq_covered_test.png
+│   ├── 08_faq_uncovered_test.png
+│   ├── 09_other_request_test.png
+│   └── 10_bedrock_evaluation_results.png
+│
+├── 04_DOCUMENTATION/
+│   ├── README.md
+│   ├── evaluation_observations.md
+│   └── submission_checklist.md
+│
+└── requirements.txt
 ## Architecture
 
 Customer → AgentCore Managed Harness → Routing Decision
