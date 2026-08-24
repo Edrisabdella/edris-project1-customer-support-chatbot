@@ -16,6 +16,9 @@ Email: edrisabdella178@gmail.com / engineeredrisabdella@gmail.com
 LinkedIn: https://www.linkedin.com/in/edris-abdella-7aa521177
 ## project structure
 Customer_Support_Chatbot/
+# Customer_Support_Chatbot/
+```text
+Customer_Support_Chatbot_FINAL/
 │
 ├── 01_IMPLEMENTATION/
 │   ├── system_prompt.txt
@@ -54,6 +57,7 @@ Customer_Support_Chatbot/
 │   └── submission_checklist.md
 │
 └── requirements.txt
+
 ## Architecture
 
 Customer → AgentCore Managed Harness → Routing Decision
