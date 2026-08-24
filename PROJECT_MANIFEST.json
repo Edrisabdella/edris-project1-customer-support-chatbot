@@ -5,45 +5,8 @@
   "program": "AWS AI & ML Scholars Program",
   "final_package": true,
   "cover_source_requested": "https://i.ibb.co/Ps7XVcWy/cover-page-customer-support-chatbot.png",
-  "project_structure": "Customer_Support_Chatbot_FINAL/
-│
-├── 01_IMPLEMENTATION/
-│   ├── system_prompt.txt
-│   ├── flow_definition.json
-│   ├── create_flow.py
-│   ├── create_harness.py
-│   ├── chat.py
-│   ├── setup_gateway.py
-│   ├── create_bug_report.py
-│   ├── cloudformation-tool.yaml
-│   ├── cloudformation-testing.yaml
-│   ├── online_shop_faq.md
-│   ├── create_guardrail.py
-│   └── create_knowledge_base.md
-│
-├── 02_TESTING/
-│   ├── flow-tests.json
-│   ├── generate-eval-dataset.py
-│   └── output_eval_dataset.jsonl
-│
-├── 03_EVIDENCE/
-│   ├── 01_full_flow_diagram.png
-│   ├── 02_classifier_prompt.png
-│   ├── 03_condition_node_expressions.png
-│   ├── 04_bug_report_chat_transcript.png
-│   ├── 05_dynamodb_ticket.png
-│   ├── 06_faq_prompt.png
-│   ├── 07_faq_covered_test.png
-│   ├── 08_faq_uncovered_test.png
-│   ├── 09_other_request_test.png
-│   └── 10_bedrock_evaluation_results.png
-│
-├── 04_DOCUMENTATION/
-│   ├── README.md
-│   ├── evaluation_observations.md
-│   └── submission_checklist.md
-│
-└── requirements.txt": {
+  "cover_source_status": "remote source unavailable in execution environment; latest approved local no-photo cover used",
+  "deliverables": {
     "presentation": "04_Final_Deliverables/Final_Project_Presentation.pptx",
     "report": "04_Final_Deliverables/Final_Project_Report.pdf",
     "cover": "00_Cover_Page/00_Cover_Page.png"
